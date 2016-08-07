@@ -1,0 +1,47 @@
+---
+- hosts: all
+  name: set up a server with nodejs
+  gather_facts: no
+  sudo: yes
+  pre_tasks:
+  - name: install python 2
+    raw: sudo apt-get -y install python-simplejson
+  tasks: 
+  - name: fetch the script
+    get_url: 
+      url: https://deb.nodesource.com/setup_6.x 
+      dest: /tmp/setup_6.x
+  - name: run the install script
+    command: bash /tmp/setup_6.x
+  - name: invoke the installer
+    apt: 
+      name: nodejs
+      state: present
+
+- hosts: all
+  name: set up a server with mongodb
+  sudo: yes
+  tasks: 
+  - name: import the apt key
+    apt_key:
+      keyserver: hkp://keyserver.ubuntu.com:80
+      id: EA312927
+  - name: create list file
+    file: 
+      path: /etc/apt/sources.list.d/mongodb-org-3.2.list
+      state: touch
+  - name: ensure file exists
+    stat:
+      path: /etc/apt/sources.list.d/mongodb-org-3.2.list
+    register: file_path
+  - name: write to list file
+    copy:
+      content: "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" 
+      dest: /etc/apt/sources.list.d/mongodb-org-3.2.list
+    when: file_path.stat.exists == true
+  - name: install mongodb packages
+    apt: 
+      name: mongodb-org
+      state: installed
+      update_cache: yes
+...
