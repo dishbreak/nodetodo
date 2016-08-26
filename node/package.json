@@ -1,0 +1,12 @@
+{
+    "name": "nodetodo",
+    "version": "0.1.0",
+    "description": "basic GTD app",
+    "author": "Vishal Kotcherlakota <vishal@kotcherlakota.org>",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        
+    }
+}

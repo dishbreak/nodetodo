@@ -4,3 +4,7 @@
 
 # ansible
 *.retry
+
+# node
+*/node_modules/*
+
