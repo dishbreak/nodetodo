@@ -11,6 +11,20 @@
 
 - hosts: all
   name: set up the hostname and hosts file
+  sudo: yes
+  vars:
+    - my_hostname: nodetodo
+  tasks:
+    - name: set hostname
+      hostname: name="{{ my_hostname }}"
+    - name: update /etc/hosts
+      template:
+        backup: yes
+        dest: /etc/hosts
+        src: ../templates/hosts
+        group: root
+        group: root
+        mode: 744
 
 
 - hosts: all
@@ -57,8 +71,12 @@
       update_cache: yes
   - name: add service unit
     copy:
-      src: mongod.service
+      src: ../templates/mongod.service
       dest: /lib/systemd/system/mongod.service
+  - name: start mongod service
+    service:
+      name: mongod
+      state: started
 
 - hosts: all 
 ...
