@@ -20,5 +20,5 @@ Install the following:
 
 Then, clone this repo, open a terminal, and bring the environment up.
 
-   vagrant up
+    vagrant up
 
