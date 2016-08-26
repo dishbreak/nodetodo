@@ -1,11 +1,22 @@
 ---
 - hosts: all
+  name: install python 2
+  gather_facts: no
+  sudo: yes
+  tasks:
+    - name: install python command
+      # The python-simplejson module will also install python 2 as a 
+      # depeandency
+      raw: sudo apt-get -y install python-simplejson 
+
+- hosts: all
+  name: set up the hostname and hosts file
+
+
+- hosts: all
   name: set up a server with nodejs
   gather_facts: no
   sudo: yes
-  pre_tasks:
-  - name: install python 2
-    raw: sudo apt-get -y install python-simplejson
   tasks: 
   - name: fetch the script
     get_url: 
@@ -44,4 +55,10 @@
       name: mongodb-org
       state: installed
       update_cache: yes
+  - name: add service unit
+    copy:
+      src: mongod.service
+      dest: /lib/systemd/system/mongod.service
+
+- hosts: all 
 ...
