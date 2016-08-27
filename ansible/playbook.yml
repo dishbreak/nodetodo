@@ -42,6 +42,11 @@
     apt: 
       name: nodejs
       state: present
+  - name: install all dependencies via npm
+    command: npm install
+    args:
+      chdir: /vagrant/node
+
 
 - hosts: all
   name: set up a server with mongodb
