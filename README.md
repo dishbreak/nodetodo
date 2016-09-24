@@ -11,6 +11,12 @@ I need a todo management system that:
 
 This isn't particularly novel or interesting as an app, but it might help someone else learn how this stuff works.
 
+# Useful References
+
+Here's a list of the the references I've used to create this:
+
+* [RESTful API User Authentication with Node.js and AngularJS](https://devdactic.com/restful-api-user-authentication-1/) - Excellent tutorial from Simon Reimler over at devdactic that lays out how to use JSON Web Tokens.
+
 # Getting Started
 
 Install the following:
