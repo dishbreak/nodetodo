@@ -90,5 +90,4 @@
       name: mongod
       state: started
 
-- hosts: all 
 ...
