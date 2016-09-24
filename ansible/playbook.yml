@@ -42,6 +42,10 @@
     apt: 
       name: nodejs
       state: present
+  - name: install g++ for node-gyp
+    apt:
+      name: g++
+      state: present
   - name: install all dependencies via npm
     command: npm install
     args:
