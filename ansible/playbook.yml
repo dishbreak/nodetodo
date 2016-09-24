@@ -2,7 +2,8 @@
 - hosts: all
   name: install python 2
   gather_facts: no
-  sudo: yes
+  become: true
+  become_user: root
   tasks:
     - name: install python command
       # The python-simplejson module will also install python 2 as a 
@@ -11,7 +12,8 @@
 
 - hosts: all
   name: set up the hostname and hosts file
-  sudo: yes
+  become: true
+  become_user: root
   vars:
     - my_hostname: nodetodo
   tasks:
@@ -23,14 +25,14 @@
         dest: /etc/hosts
         src: ../templates/hosts
         group: root
-        group: root
         mode: 744
 
 
 - hosts: all
   name: set up a server with nodejs
   gather_facts: no
-  sudo: yes
+  become: true
+  become_user: root
   tasks: 
   - name: fetch the script
     get_url: 
@@ -54,7 +56,8 @@
 
 - hosts: all
   name: set up a server with mongodb
-  sudo: yes
+  become: true
+  become_user: root
   tasks: 
   - name: import the apt key
     apt_key:
