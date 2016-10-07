@@ -33,10 +33,10 @@ require("./config/passport")(passport);
 
 // bundle up routes for API in a single router
 
-var apiRouter = express.Router();
+var loginRouter = express.Router();
 
-// POST to /api/register to create a new account
-apiRouter.post("/register", function(request, response) {
+// POST to /login/register to create a new account
+loginRouter.post("/register", function(request, response) {
     if (!request.body.name || !request.body.password) {
         response.status(400).json({success: false, message: "request needs username and password"});
     } else {
@@ -54,7 +54,7 @@ apiRouter.post("/register", function(request, response) {
     }
 });
 
-apiRouter.post("/auth", function(request, response) {
+loginRouter.post("/auth", function(request, response) {
     User.findOne({name: request.body.name}, function(err, user) {
         if (err) throw err;
         if (!user) {
@@ -79,7 +79,37 @@ apiRouter.post("/auth", function(request, response) {
     });
 });
 
-app.use("/api", apiRouter);
+app.use("/login", loginRouter);
 
+var apiRouter = express.Router();
+
+apiRouter.use(passport.authenticate("jwt", {session:false}), function(request, response, next) {
+    if (request.headers && request.headers.authorization) {
+        tokenParts = request.headers.authorization.split(' ');
+        if (tokenParts.length == 2) {
+            decodedToken = jwt.decode(tokenParts[1], config.secret);
+            User.findOne({name: decodedToken.name}, function(error, user) {
+                if (error) {
+                    return response.status(500).json({success:false, message: "MongoDB error: " +  error});
+                }
+                if (!user) {
+                    return response.status(403).json({success:false, message: "Failed to authenticate token"});
+                } else {
+                    request.nodetodo = {};
+                    request.nodetodo.token = decodedToken;
+                    next();
+                }
+            });           
+        } else {
+            return response.status(403).json({success: "false", message:"could not parse authorization header"});
+        }
+    }
+});
+
+apiRouter.get("/user", function(request, response) {
+    return response.json({success: true, message:"you are user " + request.nodetodo.token.name, token: request.nodetodo.token });
+})
+
+app.use("/api", apiRouter);
 app.listen(port);
 console.log("server active on port " + port);
