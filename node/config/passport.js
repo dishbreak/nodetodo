@@ -9,8 +9,9 @@ var databaseConfig = require("../config/database");
 module.exports = function(passport) {
     var options = {};
     options.secretOrKey = databaseConfig.secret;
-    passport.use(new JwtStrategy(options, function(jwtPayload, callback) {
-        User.findOne({id: jwtPayload.id}, function(error, user) {
+    options.passReqToCallBack = true;
+    passport.use(new JwtStrategy(options, function(jwtPayload, done) {
+        User.findOne({id: jwtPayload.id}, function(err, user) {
             if (err) {
                 return done(err, false);
             }
