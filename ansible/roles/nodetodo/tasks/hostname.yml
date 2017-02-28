@@ -1,0 +1,13 @@
+---
+- name: set hostname
+  hostname: name="{{ my_hostname }}"
+  become: true
+
+- name: update /etc/hosts
+  template:
+    backup: yes
+    dest: /etc/hosts
+    src: ../templates/hosts
+    group: root
+    mode: 744
+  become: true

@@ -1,0 +1,37 @@
+---
+- name: import the apt key
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: EA312927
+  become: true
+
+- name: create list file
+  file: 
+    path: /etc/apt/sources.list.d/mongodb-org-3.2.list
+    state: touch
+  become: true
+
+- name: write to list file
+  copy:
+    content: "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" 
+    dest: /etc/apt/sources.list.d/mongodb-org-3.2.list
+  become: true
+
+- name: install mongodb packages
+  apt: 
+    name: mongodb-org
+    state: installed
+    update_cache: yes
+  become: true
+
+- name: add service unit
+  copy:
+    src: ../templates/mongod.service
+    dest: /lib/systemd/system/mongod.service
+  become: true
+
+- name: start mongod service
+  service:
+    name: mongod
+    state: started
+  become: true

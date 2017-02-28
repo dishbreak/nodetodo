@@ -48,9 +48,11 @@ Vagrant.configure("2") do |config|
 
   end
 
+  config.vm.provision "shell",
+    inline: "sudo apt-get -y install python-simplejson"
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "ansible/playbook.yml"
+    ansible.playbook = "ansible/nodetodo.yml"
   end
 
 end

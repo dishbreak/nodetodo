@@ -1,0 +1,24 @@
+---
+- name: fetch the script
+  get_url: 
+    url: https://deb.nodesource.com/setup_6.x 
+    dest: /tmp/setup_6.x
+  become: true
+
+- name: run the install script
+  command: bash /tmp/setup_6.x
+  become: true
+
+- name: invoke installers
+  apt: 
+    name: "{{ item}}"
+    state: present
+  become: true
+  with_items:
+    - nodejs
+    - g++
+
+- name: install all dependencies via npm
+  command: npm install
+  args:
+    chdir: /vagrant/node
