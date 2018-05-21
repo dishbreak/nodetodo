@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var config = require('./config/database');
 var User = require('./models/user');
+var Task = require("./models/task")
 var port = process.env.PORT || 8080;
 var jwt = require('jwt-simple');
 var app = express();
@@ -109,6 +110,24 @@ apiRouter.use(passport.authenticate("jwt", {session:false}), function(request, r
 
 apiRouter.get("/user", function(request, response) {
     return response.json({success: true, message:"you are user " + request.nodetodo.token.name, token: request.nodetodo.token });
+})
+
+apiRouter.post("/task", function(request, response) {
+    if (!request.body.name) return response.status(400).json({success:false, message:"need task name!"})
+
+    var newTask = new Task({
+        name: request.body.name
+    })
+    promise = newTask.save();
+    promise.then(function(doc) {
+        return response.status(200).json(doc);
+    })
+})
+
+apiRouter.get("/task", function(request, response) {
+    Task.find().then(function(docs) {
+        return response.status(200).json(docs);
+    })
 })
 
 app.use("/api", apiRouter);
