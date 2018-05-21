@@ -1,4 +1,6 @@
+var mongoHost = process.env.MONGO_HOST || 'localhost'
+
 module.exports = {
     'secret': 'thisIsTheDefaultSecret',
-    'database': 'mongodb://localhost/nodetodo'
+    'database': 'mongodb://' + mongoHost + '/nodetodo' 
 };

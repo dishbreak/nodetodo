@@ -26,6 +26,7 @@ app.get('/', function(request, response) {
 });
 
 // connect to the db
+console.log("Connecting to db at: " + config.database)
 mongoose.connect(config.database);
 
 // apply the JWT strategy to passport

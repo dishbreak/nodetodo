@@ -10,7 +10,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "jwt-simple": "^0.5.0",
-    "mongoose": "^4.5.10",
+    "mongoose": "^5.1.1",
     "morgan": "^1.7.0",
     "passport": "^0.3.0",
     "passport-jwt": "^1.2.1",
